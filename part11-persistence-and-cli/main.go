@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"publicChain/part4-persistence-and-cli/BLC"
+	"publicChain/part11-persistence-and-cli/BLC"
 	"time"
 )
 
