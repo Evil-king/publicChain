@@ -19,14 +19,28 @@ type Blockchain struct {
 }
 
 // 新增区块
-//func (bc *Blockchain) AddBlock(data string) {
-//	// 1.获取上一个区块
-//	oldBlock := bc.Blocks[len(bc.Blocks)-1]
-//	// 2. 获取最新区块
-//	newBlock := NewBlock(data, oldBlock.Hash)
-//	// 3. 将新区块添加到区块链中
-//	bc.Blocks = append(bc.Blocks, newBlock)
-//}
+func (bc *Blockchain) AddBlock(data string) {
+	// 新增一个区块
+	newBlock := NewBlock(data, bc.Tip)
+	// 存储到数据库中
+	if err := bc.DB.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(blocksBucket))
+		// 存储新区块的数据
+		if err := b.Put(newBlock.Hash, newBlock.Serialize()); err != nil {
+			log.Panic(err)
+		}
+		// 存储最新区块的Hash
+		if err := b.Put([]byte("l"), newBlock.Hash); err != nil {
+			log.Panic(err)
+		}
+		// 将最新的区块的Hash存储到blockchain的Tip中
+		bc.Tip = newBlock.Hash
+
+		return nil
+	}); err != nil {
+		log.Panic(err)
+	}
+}
 
 // 创建一个带有创世区块的区块链
 func NewBlockChain() *Blockchain {

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"publicChain/part11-persistence-and-cli/BLC"
+	"publicChain/part12-persistence-and-cli/BLC"
 )
 
 // 16 进制
@@ -16,5 +16,7 @@ func main() {
 
 	blockchain := BLC.NewBlockChain()
 	fmt.Println(blockchain)
+	fmt.Printf("tip：%x\n", blockchain.Tip)
+	blockchain.AddBlock("Send 100 BTC To shaolin!!")
 	fmt.Printf("tip：%x\n", blockchain.Tip)
 }
