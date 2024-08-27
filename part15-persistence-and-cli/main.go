@@ -35,7 +35,6 @@ func main() {
 	var hashInt big.Int
 
 	for {
-		blockchainIterator = blockchainIterator.Next()
 
 		if err := blockchainIterator.DB.View(func(tx *bolt.Tx) error {
 
@@ -58,6 +57,8 @@ func main() {
 		}); err != nil {
 			log.Panic(err)
 		}
+		// 获取下一个迭代器
+		blockchainIterator = blockchainIterator.Next()
 
 		// 将迭代器中的hash存储到hashInt
 		hashInt.SetBytes(blockchainIterator.CurrentHash)
