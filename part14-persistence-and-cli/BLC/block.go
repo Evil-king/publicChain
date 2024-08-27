@@ -40,10 +40,6 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 	// 设置Nonce
 	block.Nonce = nonce
 
-	// 验证工作量证明
-	//isValid := pow.Validate()
-	//fmt.Println(isValid)
-
 	// 返回block
 	return block
 }
