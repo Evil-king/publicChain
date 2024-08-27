@@ -10,7 +10,6 @@ func main() {
 	cli := BLC.CLI{blockchain}
 
 	// 调用cli的Run方法
-
 	cli.Run()
 
 }
