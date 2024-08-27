@@ -63,7 +63,8 @@ func (cli *CLI) Run() {
 			addBlockCmd.Usage()
 			os.Exit(1)
 		}
-		fmt.Println("Data：" + *addBlockData)
+		// 添加区块
+		cli.addBlock(*addBlockData)
 	}
 
 	if printChainCmd.Parsed() {
