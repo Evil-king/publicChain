@@ -33,6 +33,12 @@ type TXOutput struct {
 	ScriptPubKey string // 用户名
 }
 
+// 判断当前交易是否是CoinbaseTX(创世区块的交易)
+func (tx *Transaction) IsCoinbase() bool {
+
+	return len(tx.Vin[0].Txid) == 0 && tx.Vin[0].Vout == -1 && len(tx.Vin) == 1
+}
+
 // 创建一个新的 coinbase 交易(创世区块对应的交易)
 func NewCoinbaseTX(to, data string) *Transaction {
 	if data == "" {
