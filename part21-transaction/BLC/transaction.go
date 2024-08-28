@@ -8,8 +8,6 @@ import (
 	"log"
 )
 
-const subsidy = 10
-
 type Transaction struct {
 	// 1. 交易ID
 	ID []byte
@@ -41,7 +39,7 @@ func NewCoinbaseTX(to, data string) *Transaction {
 		data = fmt.Sprintf("Reward to '%s'", to)
 	}
 	txInput := TXInput{[]byte{}, -1, data}
-	txOutput := TXOutput{subsidy, to}
+	txOutput := TXOutput{10, to}
 	tx := &Transaction{nil, []TXInput{txInput}, []TXOutput{txOutput}}
 	tx.SetID()
 	return tx
@@ -63,4 +61,14 @@ func (tx *Transaction) SetID() {
 	// 将序列化以后的字节数组生成256hash
 	hash = sha256.Sum256(encoded.Bytes())
 	tx.ID = hash[:]
+}
+
+// 检查账号地址，解锁
+func (in *TXInput) CanUnlockOutputWith(unlockingData string) bool {
+	return in.ScriptSig == unlockingData
+}
+
+// 检查是否能够解锁账号
+func (out *TXOutput) CanBeUnlockedWith(unlockingData string) bool {
+	return out.ScriptPubKey == unlockingData
 }
