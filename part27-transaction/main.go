@@ -1,6 +1,6 @@
 package main
 
-import "publicChain/part26-transaction/BLC"
+import "publicChain/part27-transaction/BLC"
 
 func main() {
 	// 创建区块链
