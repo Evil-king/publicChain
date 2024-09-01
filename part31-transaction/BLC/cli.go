@@ -84,7 +84,7 @@ func (cli *CLI) Run() {
 			createBlockchainCmd.Usage()
 			os.Exit(1)
 		}
-		// 添加区块
+		// 创建创世区块
 		fmt.Println("创建创世区块并且存储到数据库....")
 	}
 
