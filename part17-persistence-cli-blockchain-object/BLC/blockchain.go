@@ -63,7 +63,7 @@ func (blc *Blockchain) AddBlockToBlockchain(data string) {
 }
 
 // 创建一个带有创世区块的区块链
-func CreateBlockchainWithGenesisBlock(data string) *Blockchain {
+func CreateBlockchainWithGenesisBlock(data string) {
 	// 判断数据库是否存在
 	if dbExists() {
 		fmt.Println("创世区块已经存在.......")
@@ -71,8 +71,6 @@ func CreateBlockchainWithGenesisBlock(data string) *Blockchain {
 	}
 
 	fmt.Println("正在创建创世区块.......")
-
-	var tip []byte // 获取最新一个区块的Hash
 	// 创建一个数据库
 	db, err := bolt.Open(dbName, 0600, nil)
 	if err != nil {
@@ -86,33 +84,30 @@ func CreateBlockchainWithGenesisBlock(data string) *Blockchain {
 		if err != nil {
 			log.Panic(err)
 		}
-		if b == nil {
+		if b != nil {
 			// 创建创世区块
 			genesis := CreateGenesisBlock(data)
 			// 将创世区块序列化后存储到表中
-			err = b.Put(genesis.Hash, genesis.Serialize())
-			if err != nil {
+			if err = b.Put(genesis.Hash, genesis.Serialize()); err != nil {
 				log.Panic(err)
 			}
 			// 存储最新区块的Hash
-			err = b.Put([]byte("l"), genesis.Hash)
-			if err != nil {
+			if err = b.Put([]byte("l"), genesis.Hash); err != nil {
 				log.Panic(err)
 			}
-			tip = genesis.Hash
 		}
 		return err
 	})
 	if err != nil {
 		log.Panic(err)
 	}
-	return &Blockchain{tip, db}
+	fmt.Println("创建创世区块完成.......")
 }
 
 // 遍历输出所有区块的信息
 func (blc *Blockchain) Printchain() {
 
-	fmt.Println("PrintchainPrintchainPrintchainPrintchain")
+	fmt.Println("开始打印输出...........")
 	blockchainIterator := blc.Iterator()
 
 	for {

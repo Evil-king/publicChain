@@ -15,11 +15,13 @@ type BlockchainIterator struct {
 func (bi *BlockchainIterator) Next() *Block {
 	var currentBlock *Block
 	if err := bi.DB.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte(blockTableName))
-		// 获取当前区块并且发序列化
-		currentBlock = DeserializeBlock(b.Get(bi.CurrentHash))
-		// 获取当前区块的下一个区块的Hash
-		bi.CurrentHash = currentBlock.PrevBlockHash
+		if b := tx.Bucket([]byte(blockTableName)); b != nil {
+			blockByte := b.Get(bi.CurrentHash)
+			// 获取当前区块并且反序列化
+			currentBlock = DeserializeBlock(blockByte)
+			// 获取当前区块的下一个区块的Hash
+			bi.CurrentHash = currentBlock.PrevBlockHash
+		}
 		return nil
 	}); err != nil {
 		log.Panic(err)

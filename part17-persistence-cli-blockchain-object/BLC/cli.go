@@ -58,7 +58,7 @@ func (cli *CLI) Run() {
 
 	addBlockCmd := flag.NewFlagSet("addblock", flag.ExitOnError)
 	printChainCmd := flag.NewFlagSet("printchain", flag.ExitOnError)
-	createBlockchainCmd := flag.NewFlagSet("createblockchain", flag.ExitOnError)
+	createBlockchainCmd := flag.NewFlagSet("createblockchainwithgenesis", flag.ExitOnError)
 
 	flagAddBlockData := addBlockCmd.String("data", "", "交易数据......")
 	flagCreateBlockchainWithData := createBlockchainCmd.String("data", "Genesis block data......", "创世区块交易数据......")
@@ -74,7 +74,7 @@ func (cli *CLI) Run() {
 		if err != nil {
 			log.Panic(err)
 		}
-	case "crateblockchain":
+	case "createblockchainwithgenesis":
 		err := createBlockchainCmd.Parse(os.Args[2:])
 		if err != nil {
 			log.Panic(err)
