@@ -223,6 +223,17 @@ func (bc *Blockchain) MineNewBlock(from []string, to []string, amount []string) 
 	}
 }
 
+// 查询余额
+func (bc *Blockchain) GetBalance(address string) int64 {
+	// 查询未消费
+	utxos := bc.UnUTXOs(address)
+	var money int64
+	for _, utxo := range utxos {
+		money = money + utxo.Output.Value
+	}
+	return money
+}
+
 func (bc *Blockchain) printChain() {
 	blockchainIterator := bc.Iterator()
 	var hashInt big.Int
