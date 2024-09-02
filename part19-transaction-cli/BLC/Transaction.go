@@ -45,15 +45,12 @@ func NewSimpleTransaction(from, to string, amount int, bc *Blockchain) *Transact
 	var txOutputs []*TXOutput
 
 	// 获取该地址对应的可用余额
-	money, validOutputs := bc.FindSpendableUTXOS(from, amount)
+	money, spendableUTXODic := bc.FindSpendableUTXOS(from, amount)
 
 	// 建立输入
-	for index, out := range validOutputs {
-		txID, err := hex.DecodeString(index)
-		if err != nil {
-			log.Panic(err)
-		}
-		for _, value := range out {
+	for txHash, indexArray := range spendableUTXODic {
+		txID, _ := hex.DecodeString(txHash)
+		for _, value := range indexArray {
 			txInputs = append(txInputs, &TXInput{
 				TxHash:    txID,
 				Vout:      value,
