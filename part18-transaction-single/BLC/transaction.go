@@ -26,7 +26,7 @@ func (tx *Transaction) IsCoinbaseTransaction() bool {
 
 // 1. Transaction 创建分两种情况
 // 创世区块创建时的Transaction
-func NewCoinbaseTX(to, data string) *Transaction {
+func NewCoinbaseTransaction(to, data string) *Transaction {
 	if data == "" {
 		data = fmt.Sprintf("Reward to '%s'", to)
 	}

@@ -88,6 +88,6 @@ func DeserializeBlock(d []byte) *Block {
 }
 
 // 创建创世区块，并返回创世区块
-func CreateGenesisBlock(transactions *Transaction) *Block {
-	return NewBlock([]*Transaction{transactions}, 1, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
+func CreateGenesisBlock(transactions []*Transaction) *Block {
+	return NewBlock(transactions, 1, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 }

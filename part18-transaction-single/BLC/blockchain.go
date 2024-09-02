@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/boltdb/bolt"
+	"github.com/gogf/gf/v2/frame/g"
 	"log"
 	"math/big"
 	"os"
@@ -125,7 +126,7 @@ func (bc *Blockchain) FindSpendableUTXOS(form string, amount int) (int64, map[st
 }
 
 // 创建一个带有创世区块的区块链
-func CreateBlockchainWithGenesisBlock(data string) *Blockchain {
+func CreateBlockchainWithGenesisBlock(address string) *Blockchain {
 	// 判断数据库是否存在
 	if DBExists() {
 		fmt.Println("创世区块已经存在.......")
@@ -144,14 +145,9 @@ func CreateBlockchainWithGenesisBlock(data string) *Blockchain {
 		b := tx.Bucket([]byte(blockTableName))
 		if b == nil {
 			// 创建创世区块交易对象
-			coinbaseTx := NewCoinbaseTX("hwq", genesisCoinbaseData)
+			coinbaseTx := NewCoinbaseTransaction(address, genesisCoinbaseData)
 			// 创建创世区块
-			genesis := CreateGenesisBlock(coinbaseTx)
-			// 创建表
-			b, err = tx.CreateBucket([]byte(blockTableName))
-			if err != nil {
-				log.Panic(err)
-			}
+			genesis := CreateGenesisBlock([]*Transaction{coinbaseTx})
 			// 将创世区块序列化后存储到表中
 			err = b.Put(genesis.Hash, genesis.Serialize())
 			if err != nil {
@@ -162,12 +158,7 @@ func CreateBlockchainWithGenesisBlock(data string) *Blockchain {
 			if err != nil {
 				log.Panic(err)
 			}
-
 			tip = genesis.Hash
-		} else { // 表存在
-			// key: l
-			// value : 最新一个区块的Hash
-			tip = b.Get([]byte("l"))
 		}
 		return err
 	})
@@ -246,7 +237,7 @@ func (bc *Blockchain) printChain() {
 		fmt.Printf("Timestamp：%s\n", time.Unix(block.TimeStamp, 0).Format("2006-01-02 03:04:05 PM"))
 		fmt.Printf("Hash：%x\n", block.Hash)
 		fmt.Printf("Nonce：%d\n", block.Nonce)
-		fmt.Println("Txs:")
+		g.Dump(block.Txs)
 
 		fmt.Println()
 
