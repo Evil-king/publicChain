@@ -95,7 +95,7 @@ func (cli *CLI) Run() {
 	flagAmount := sendBlockCmd.String("amount", "", "转账金额......")
 
 	flagCreateBlockchainWithAddress := createBlockchainCmd.String("address", "", "创建创世区块的地址")
-	getbalanceWithAddress := getBalanceCmd.String("address", "", "要查询某一个账号的余额.......")
+	getBalanceWithAddress := getBalanceCmd.String("address", "", "要查询某一个账号的余额.......")
 
 	switch os.Args[1] {
 	case "send":
@@ -151,12 +151,12 @@ func (cli *CLI) Run() {
 	}
 
 	if getBalanceCmd.Parsed() {
-		if *getbalanceWithAddress == "" {
+		if *getBalanceWithAddress == "" {
 			fmt.Println("地址不能为空....")
 			printUsage()
 			os.Exit(1)
 		}
-		cli.getBalance(*getbalanceWithAddress)
+		cli.getBalance(*getBalanceWithAddress)
 	}
 }
 
